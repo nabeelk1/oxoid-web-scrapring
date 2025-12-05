@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
+
 
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
@@ -24,6 +26,10 @@ namespace oxoid_web_scrapring
                 // 3. Update status in db/csv
             Console.WriteLine("hello this is my first line of code in a million years.");
 
+            string csvPath = @"C:\Users\nabeelk\Home\Al-Majharia\oxoid-project\scraper\output.csv";
+            var sb = new StringBuilder();
+            // Header
+            sb.AppendLine("page_no,line");
 
 
             using (PdfDocument document = PdfDocument.Open(@"C:\Users\nabeelk\Home\Al-Majharia\oxoid-project\scraper\oxoid-web-scrapring\2025-EU-Microbiology-Catalog_EN.pdf"))
@@ -50,21 +56,27 @@ namespace oxoid_web_scrapring
 
                     foreach (var line in lines)
                     {
-                        Console.WriteLine($"  \"{line}\",");
+                        // Escape quotes for CSV safety
+                        string safeLine = line.Replace("\"", "\"\"");
+                        Console.WriteLine($"{page.Number},\"{safeLine}\"");
+
+
+                        
+                        sb.AppendLine($"{page.Number},\"{safeLine}\"");
                     }
 
                     Console.WriteLine("]");
                     Console.WriteLine(); // blank line between pages
 
-
-
-
-
-
                 }
 
 
             }
+
+            // Write CSV to file
+            File.WriteAllText(csvPath, sb.ToString(), Encoding.UTF8);
+
+            Console.WriteLine("CSV file generated successfully!");
 
 
 
