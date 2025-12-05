@@ -19,10 +19,12 @@ namespace oxoid_web_scrapring
 
 
             // Goal of this project: 
-                // 1. Use Iron Pdf to extract CAT no's and store in db/csv
+                // 1. Use UglyToad.PigPdf to extract CAT no's and store in db/csv
                 // 2. Connect with sfda website to extract license status.
                 // 3. Update status in db/csv
             Console.WriteLine("hello this is my first line of code in a million years.");
+
+
 
             using (PdfDocument document = PdfDocument.Open(@"C:\Users\nabeelk\Home\Al-Majharia\oxoid-project\scraper\oxoid-web-scrapring\2025-EU-Microbiology-Catalog_EN.pdf"))
             {
@@ -31,10 +33,40 @@ namespace oxoid_web_scrapring
                     string text = ContentOrderTextExtractor.GetText(page);
                     IEnumerable<Word> words = page.GetWords(NearestNeighbourWordExtractor.Instance);
 
-                    Console.WriteLine($"####Page Number{page.Number}###");
-                    Console.WriteLine($"{text}");
+                    //Console.WriteLine($"####Page Number{page.Number}###");
+                    //Console.WriteLine($"{text}");
+
+                    // Split text by \n into lines
+                    string[] lines = text
+                        .Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(l => l.Trim())
+                        .Where(l => !string.IsNullOrWhiteSpace(l))
+                        .ToArray();
+
+                    Console.WriteLine($"#### Page {page.Number} ####");
+
+                    // Print the lines
+                    Console.WriteLine("[");
+
+                    foreach (var line in lines)
+                    {
+                        Console.WriteLine($"  \"{line}\",");
+                    }
+
+                    Console.WriteLine("]");
+                    Console.WriteLine(); // blank line between pages
+
+
+
+
+
+
                 }
+
+
             }
+
+
 
 
 
