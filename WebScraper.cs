@@ -53,7 +53,7 @@ namespace oxoid_web_scrapring
                     maxTimeout = 60000,
                     proxy = new
                     {
-                        url = $"http://{proxy}"
+                        url = $"{proxy}"
                     }
                 };
 
